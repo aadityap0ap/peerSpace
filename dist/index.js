@@ -9,6 +9,7 @@ wss.on("connection", (socket) => {
     console.log("User Connected #" + userCount);
     socket.on("message", (message) => {
         console.log("Message recived" + message.toString());
+        socket.send(message.toString() + "sent from server");
     });
 });
 //# sourceMappingURL=index.js.map

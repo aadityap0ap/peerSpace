@@ -12,5 +12,6 @@ wss.on("connection", (socket) => {
 
     socket.on("message",(message) => {
         console.log("Message recived" + message.toString());
+        socket.send(message.toString() + "sent from server");
     })
 });
