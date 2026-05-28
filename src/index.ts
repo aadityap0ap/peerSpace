@@ -1,2 +1,2 @@
-console.log("Hello");
-console.log("hi");
+import {WebSocketServer}from 'ws';
+const wss = new WebSocketServer({port : 8080});
