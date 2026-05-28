@@ -12,10 +12,12 @@ wss.on("connection", (socket) => {
     console.log("User Connected #" + userCount);
 
     socket.on("message",(message) => {
-        console.log("Message recived" + message.toString());
+        console.log("Message recived " + message.toString());
         for(let i = 0;i<allSockets.length;i++){
             const s = allSockets[i];
-            socket.send(message.toString() + "sent from server");
+            if (s) {
+            s.send(message.toString() + " sent from server");
+    }
         }
     })
 });
