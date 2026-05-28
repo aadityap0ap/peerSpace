@@ -1,0 +1,26 @@
+{
+  "name": "peerspace",
+  "version": "1.0.0",
+  "description": "PeerSpace is a MERN-based realtime campus networking platform featuring WebSocket-powered messaging, community rooms, and live interactions.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aadityap0ap/peerSpace.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/aadityap0ap/peerSpace/issues"
+  },
+  "homepage": "https://github.com/aadityap0ap/peerSpace#readme",
+  "dependencies": {
+    "@types/ws": "^8.18.1",
+    "typescript": "^6.0.3",
+    "ws": "^8.21.0"
+  }
+}
