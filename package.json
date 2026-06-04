@@ -23,13 +23,18 @@
   "homepage": "https://github.com/aadityap0ap/peerSpace#readme",
   "dependencies": {
     "@types/ws": "^8.18.1",
+    "cors": "^2.8.6",
     "express": "^5.2.1",
-    "typescript": "^6.0.3",
     "ws": "^8.21.0"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.1",
     "concurrently": "^10.0.0",
     "nodemon": "^3.1.14",
-    "ts-node": "^10.9.2"
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^6.0.3"
   }
 }
