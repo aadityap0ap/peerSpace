@@ -29,6 +29,7 @@ export async function ConnectDB(){
 }
 
 const userSchema = new mongoose.Schema({
+    email: String,
     username : String,
     password : String
 });

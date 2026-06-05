@@ -1,12 +1,18 @@
 import {Router } from "express";
 import { User } from "../db/db";
-import { runInNewContext } from "node:vm";
 const router = Router()
 
 router.post("/signup",async(req,res) => {
     try{
-        const {username,password} = req.body;
+        const {email,username,password} = req.body;
+        const findDuplicate = await User.findOne({email});
+        if(findDuplicate){
+            return res.status(400).json({
+                message : "User with this email already exists"
+            })
+        }
         await User.create({
+            email,
             username,
             password
         });
