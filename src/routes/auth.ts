@@ -1,7 +1,10 @@
 import {Router } from "express";
 import { User } from "../db/db";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+import { configDotenv } from "dotenv";
 const router = Router()
+configDotenv();
 
 router.post("/signup",async(req,res) => {
     try{
@@ -31,15 +34,29 @@ router.post("/signup",async(req,res) => {
 
 router.post("/signin",async(req,res) => {
     try{
-        const {username,password} = req.body;
-        const find = await User.findOne({password});
-        if(!find){
+        const {email,password} = req.body;
+        const user = await User.findOne({email});
+        if(!user){
             return res.status(400).json({
-                message:"Invalid PassWord!"
+                message:"Invalid Email!"
             });
         }
+        const matched = await bcrypt.compare(
+            password,
+            user.password as string
+        );
+        if(!matched){
+            return res.status(400).json({
+                message:"Invalid PassWord!"
+            })
+        }
+        const token = jwt.sign(
+            {id : user._id},
+            process.env.JWT_USER_PASSWORD as string
+        )
         return res.status(200).json({
-            message : `Welcome to PeerSpace ${username}`
+            message : "Welcome to PeerSpace",
+            token
         })
     }
     catch(error){
