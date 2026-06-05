@@ -1,5 +1,6 @@
 import {Router } from "express";
 import { User } from "../db/db";
+import bcrypt from "bcrypt";
 const router = Router()
 
 router.post("/signup",async(req,res) => {
@@ -11,10 +12,11 @@ router.post("/signup",async(req,res) => {
                 message : "User with this email already exists"
             })
         }
+        const hashedPassword = await bcrypt.hash(password,10);
         await User.create({
             email,
             username,
-            password
+            password:hashedPassword
         });
         return res.status(200).json({
             message:"Account Created Successfully!"
