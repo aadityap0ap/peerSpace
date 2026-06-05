@@ -11,7 +11,7 @@ router.post("/signup",async(req,res) => {
         const {email,username,password} = req.body;
         const findDuplicate = await User.findOne({email});
         if(findDuplicate){
-            return res.status(400).json({
+            return res.status(409).json({
                 message : "User with this email already exists"
             })
         }
@@ -21,7 +21,7 @@ router.post("/signup",async(req,res) => {
             username,
             password:hashedPassword
         });
-        return res.status(200).json({
+        return res.status(201).json({
             message:"Account Created Successfully!"
         })
     }
@@ -37,7 +37,7 @@ router.post("/signin",async(req,res) => {
         const {email,password} = req.body;
         const user = await User.findOne({email});
         if(!user){
-            return res.status(400).json({
+            return res.status(401).json({
                 message:"Invalid Email!"
             });
         }
@@ -46,7 +46,7 @@ router.post("/signin",async(req,res) => {
             user.password as string
         );
         if(!matched){
-            return res.status(400).json({
+            return res.status(401).json({
                 message:"Invalid PassWord!"
             })
         }
