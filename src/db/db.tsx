@@ -34,4 +34,10 @@ const userSchema = new mongoose.Schema({
     password : String
 });
 
+const roomSchema = new mongoose.Schema({
+    roomId : String,
+    createdBy : String
+})
+
 export const User = mongoose.model("User",userSchema);
+export const room = mongoose.model("room",roomSchema);
