@@ -23,4 +23,27 @@ router.post("/createRoom",authMiddleware,async(req,res) => {
     }
 })
 
+router.post("/findRoom",async(req,res) => {
+    try{
+        const{roomId} = req.body;
+        const existingRoom = await room.findOne({
+            roomId
+        });
+        if(!existingRoom){
+            return res.status(404).json({
+                message:"Room does not exist !"
+            });
+        }
+        return res.status(200).json({
+            message:"Room Found",
+            roomId
+        });
+    }
+    catch(error){
+        return res.status(500).json({
+            message:"Sever Error!"
+        });
+    }
+})
+
 export default router;
