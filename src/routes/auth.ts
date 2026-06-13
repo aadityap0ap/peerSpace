@@ -41,11 +41,11 @@ router.post("/signup",async(req,res) => {
 
 router.post("/signin",async(req,res) => {
     try{
-        const {email,password} = req.body;
-        const user = await User.findOne({email});
+        const {uniqueId,password} = req.body;
+        const user = await User.findOne({uniqueId});
         if(!user){
             return res.status(401).json({
-                message:"Invalid Email!"
+                message:"Invalid uniqueId && uniqueId not found!"
             });
         }
         const matched = await bcrypt.compare(
