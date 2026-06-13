@@ -8,15 +8,22 @@ configDotenv();
 
 router.post("/signup",async(req,res) => {
     try{
-        const {email,username,password} = req.body;
+        const {uniqueId,email,username,password} = req.body;
+        const existingUniqueId = await User.findOne({uniqueId});
+        if(existingUniqueId){
+            return res.status(409).json({
+                message : "user With this uniqueId Exists!"
+            });
+        }
         const findDuplicate = await User.findOne({email});
         if(findDuplicate){
             return res.status(409).json({
                 message : "User with this email already exists"
-            })
+            });
         }
         const hashedPassword = await bcrypt.hash(password,10);
         await User.create({
+            uniqueId,
             email,
             username,
             password:hashedPassword
