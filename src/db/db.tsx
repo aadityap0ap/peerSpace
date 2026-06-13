@@ -29,9 +29,24 @@ export async function ConnectDB(){
 }
 
 const userSchema = new mongoose.Schema({
-    email: String,
-    username : String,
-    password : String
+    uniqueId : {
+        type : String,
+        required : true,
+        unique : true
+    },
+    email:{
+        type: String,
+        required : true,
+        unique : true
+    },
+    username : {
+        type : String,
+        required : true
+    },
+    password : {
+        type : String,
+        requird : true
+    }
 });
 
 const roomSchema = new mongoose.Schema({
