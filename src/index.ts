@@ -1,6 +1,7 @@
 import express from "express";
 import authRouter from "./routes/auth";
 import roomRouter from "./routes/room";
+import friendRouter from "./routes/friends"
 import { ConnectDB } from "./db/db";
 import { configDotenv } from "dotenv";
 import cors from "cors";
@@ -18,6 +19,7 @@ app.use(express.json());
 
 app.use("/auth", authRouter);
 app.use("/room", roomRouter);
+app.use("/friend",friendRouter);
 
 // Create HTTP server from Express app
 const server = http.createServer(app);

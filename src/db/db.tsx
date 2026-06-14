@@ -84,3 +84,4 @@ const friendRequestSchema = new mongoose.Schema({
 
 export const User = mongoose.model("User",userSchema);
 export const room = mongoose.model("room",roomSchema);
+export const friendRequest = mongoose.model("friendRequest",friendRequestSchema);
