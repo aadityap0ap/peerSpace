@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { User } from "../db/db";
+import { friendRequest, User } from "../db/db";
 const router = Router();
 
 router.get("/search",authMiddleware,async(req,res) => {
@@ -20,6 +20,51 @@ router.get("/search",authMiddleware,async(req,res) => {
     catch(error){
         return res.status(500).json({
             message : "Backend Error && Server Crashed!"
+        })
+    }
+})
+
+router.post("/request",authMiddleware,async(req,res) => {
+    try{
+        const senderId = (req as any).userId;
+        const {receiverId} = req.body;
+        if(senderId == receiverId){
+            return res.status(400).json({
+                message : "You Can't send friend request to Yourself!"
+            });
+        }
+        const receiver = await User.findOne({
+            uniqueId: receiverId,
+        });
+        if(!receiver){
+            return res.status(404).json({
+                message : "Receiver Not Found!"
+            });
+        }
+        const existingRequest = await friendRequest.findOne({
+            sender:senderId,
+            receiver:receiver._id,
+            status: "pending"
+        });
+        if(existingRequest){
+            return res.status(400).json({
+                message : "Friend Request already Sent!"
+            });
+        }
+        await friendRequest.create({
+            sender : senderId,
+            receiver : receiver._id,
+            status: "pending"
+        });
+
+        return res.status(201).json({
+            message : "Friend Request Sent Successfully!"
+        });
+    }
+    catch(error){
+        console.log(error);
+        return res.status(500).json({
+            message :"BackeEnd Error And Server Crashed!"
         })
     }
 })
