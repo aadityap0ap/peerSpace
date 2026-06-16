@@ -69,4 +69,23 @@ router.post("/request",authMiddleware,async(req,res) => {
     }
 })
 
+router.get("/pending",authMiddleware,async(req,res) => {
+    try{
+        const receiverid = (req as any).userId;
+
+        const pendingRequest = await friendRequest.find({
+            receiver:receiverid,
+            status:"pending"
+        }).populate("sender","username uniqueId");
+        return res.status(200).json({
+            pendingRequest,
+        })
+    }
+    catch(error){
+        return res.status(500).json({
+            message: "Internal Sever Error!"
+        })
+    }
+})
+
 export default router;
