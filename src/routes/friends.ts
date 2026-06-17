@@ -88,4 +88,44 @@ router.get("/pending",authMiddleware,async(req,res) => {
     }
 })
 
+router.post("/accept",authMiddleware,async(req,res) => {
+    try{
+        const {requestId} = req.body;
+        const request = await friendRequest.findById(requestId);
+        if(!request){
+            return res.status(404).json({
+                message : "No Such request Found!"
+            });
+        }
+        if(request.receiver.toString() !== (req as any).userId){
+            return res.status(403).json({
+                message : "you are not authorized!"
+            });
+        }
+        request.status = "accepted";
+        await request.save();
+
+        await User.findByIdAndUpdate(request.sender,{
+            $addToSet : {
+                friends : request.receiver,
+            },
+        });
+
+        await User.findByIdAndUpdate(request.receiver,{
+            $addToSet : {
+                friends : request.sender,
+            }
+        });
+
+        return res.status(200).json({
+            message : "Friend Request Accepted!"
+        })
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "Internal BackEnd Server Error!"
+        })
+    }
+})
+
 export default router;
