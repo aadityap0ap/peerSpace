@@ -128,4 +128,34 @@ router.post("/accept",authMiddleware,async(req,res) => {
     }
 })
 
+router.post("/reject",authMiddleware,async(req,res) => {
+    try{
+        const {requestId} = req.body;
+        const request = await friendRequest.findById(requestId);
+        if(!request){
+            return res.status(404).json({
+                message : "No Such request Found!"
+            });
+        }
+
+        if(request.receiver.toString() !== (req as any).userId){
+            return res.status(403).json({
+                message : "You are not Authorized for this Service!"
+            });
+        }
+
+        request.status = "rejected";
+        await request.save();
+
+        return res.status(200).json({
+            message : "Friend request rejected!"
+        })
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "BackEnd Error or Server Crashed"
+        })
+    }
+})
+
 export default router;
