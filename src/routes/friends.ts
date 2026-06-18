@@ -158,4 +158,27 @@ router.post("/reject",authMiddleware,async(req,res) => {
     }
 })
 
+// User.findById(user).populate("friends", "username uniqueId") first finds the user document whose _id matches user. The populate("friends") call tells Mongoose to replace the ObjectIds stored in the friends array with the actual User documents they reference. The second argument ("username uniqueId") acts as a field selector, so only those two fields are included in the populated friend objects, avoiding unnecessary data such as passwords or email addresses. This makes it easy for the frontend to display meaningful friend information instead of raw database IDs.
+
+router.get("/friendList",authMiddleware,async(req,res) => {
+    try{
+        const user = (req as any).userId;
+        const findUser = await User.findById(user).populate("friends","username uniqueId");
+        if(!findUser){
+            return res.status(404).json({
+                message : "User doesnot exist!"
+            });
+        }
+        return res.status(200).json({
+            message : "Your Friends are as followed!",
+            friends :  findUser.friends
+        })
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "BackEnd Error or Server Crashed!"
+        })
+    }
+})
+
 export default router;
