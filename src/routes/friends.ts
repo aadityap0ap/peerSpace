@@ -181,4 +181,30 @@ router.get("/friendList",authMiddleware,async(req,res) => {
     }
 })
 
+
+router.post("/remove",authMiddleware,async(req,res) => {
+    try{
+        const userid = (req as any).userId;
+        const {friendId} = req.body;
+        await User.findByIdAndUpdate(userid,{
+            $pull:{
+                friends : friendId,
+            }
+        });
+        await User.findByIdAndUpdate(friendId,{
+            $pull:{
+                friends : userid,
+            }
+        });
+        return res.status(200).json({
+            message : "Friends removed Successfully!"
+        });
+    }
+    catch(error){
+        return res.status(500).json({
+            message : "BackEnd Error or Server Crashed!"
+        });
+    }
+})
+
 export default router;
