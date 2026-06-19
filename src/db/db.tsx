@@ -82,6 +82,21 @@ const friendRequestSchema = new mongoose.Schema({
 }
 );
 
+const conversationSchema = new mongoose.Schema({
+    participants:[
+        {
+            type :  mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required :true
+        },
+    ],
+},
+{
+timestamps : true
+}
+);
+
 export const User = mongoose.model("User",userSchema);
 export const room = mongoose.model("room",roomSchema);
 export const friendRequest = mongoose.model("friendRequest",friendRequestSchema);
+export const conversation = mongoose.model("conversation",conversationSchema);
