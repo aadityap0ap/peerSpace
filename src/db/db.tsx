@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { mongo } from "mongoose";
 
 export async function ConnectDB(){
     await mongoose.connect(process.env.MONGO_URL!);
@@ -96,7 +96,30 @@ timestamps : true
 }
 );
 
+const messageSchema = new mongoose.Schema(
+    {
+        conversation : {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "conversation",
+            required : true
+        },
+        sender : {
+            type : mongoose.Schema.Types.ObjectId,
+            ref : "User",
+            required : true
+        },
+        text : {
+            type : String,
+            required : true
+        },
+    },
+    {
+        timestamps : true
+    }
+);
+
 export const User = mongoose.model("User",userSchema);
 export const room = mongoose.model("room",roomSchema);
 export const friendRequest = mongoose.model("friendRequest",friendRequestSchema);
 export const conversation = mongoose.model("conversation",conversationSchema);
+export const message = mongoose.model("message",messageSchema);
