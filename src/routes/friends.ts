@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { authMiddleware } from "../middlewares/authMiddleware";
-import { friendRequest, User } from "../db/db";
+import { conversation, friendRequest, User } from "../db/db";
 const router = Router();
 
 router.get("/search",authMiddleware,async(req,res) => {
@@ -207,4 +207,68 @@ router.post("/remove",authMiddleware,async(req,res) => {
     }
 })
 
+router.post("/open", authMiddleware, async (req, res) => {
+  try {
+    const userId = (req as any).userId;
+    const { friendId } = req.body;
+
+    if (!friendId) {
+      return res.status(400).json({
+        message: "friendId is required",
+      });
+    }
+    if (userId === friendId) {
+      return res.status(400).json({
+        message: "You cannot create a conversation with yourself",
+      });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({
+        message: "User not found",
+      });
+    }
+    const friend = await User.findById(friendId);
+    if (!friend) {
+      return res.status(404).json({
+        message: "Friend not found",
+      });
+    }
+
+    const isFriend = user.friends.some(
+      (id: any) => id.toString() === friendId
+    );
+
+    if (!isFriend) {
+      return res.status(403).json({
+        message: "You can only chat with users in your friends list",
+      });
+    }
+    const existingConversation = await conversation.findOne({
+      participants: {
+        $all: [userId, friendId],
+      },
+    });
+
+    if (existingConversation) {
+      return res.status(200).json({
+        conversation: existingConversation,
+      });
+    }
+    const newConversation = await conversation.create({
+      participants: [userId, friendId],
+    });
+
+    return res.status(201).json({
+      conversation: newConversation,
+    });
+  } catch (error) {
+    console.log(error);
+
+    return res.status(500).json({
+      message: "Backend Error or Server Crashed!",
+    });
+  }
+})
 export default router;
