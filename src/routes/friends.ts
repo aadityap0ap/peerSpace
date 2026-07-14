@@ -146,7 +146,6 @@ router.post("/reject",authMiddleware,async(req,res) => {
 
         request.status = "rejected";
         await request.save();
-
         return res.status(200).json({
             message : "Friend request rejected!"
         })
@@ -222,7 +221,6 @@ router.post("/open", authMiddleware, async (req, res) => {
         message: "You cannot create a conversation with yourself",
       });
     }
-
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({
