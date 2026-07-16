@@ -78,7 +78,7 @@ router.get("/pending",authMiddleware,async(req,res) => {
             status:"pending"
         }).populate("sender","username uniqueId");
         return res.status(200).json({
-            pendingRequest,
+            requests : pendingRequest,
         })
     }
     catch(error){
