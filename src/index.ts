@@ -17,6 +17,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+app.get("/", (_req, res) => res.json({ status: "ok" }));
+
 app.use("/auth", authRouter);
 app.use("/room", roomRouter);
 app.use("/friend",friendRouter);
@@ -30,15 +32,18 @@ const wss = new WebSocketServer({ server });
 // Register chat handlers
 setupChat(wss);
 
+const PORT = Number(process.env.PORT) || 3000;
+
 async function StartServer() {
   try {
     await ConnectDB();
 
-    server.listen(3000, () => {
-      console.log("Server running on port 3000");
+    server.listen(PORT, "0.0.0.0", () => {
+      console.log(`Server running on port ${PORT}`);
     });
   } catch (error) {
-    console.log("DB error occurred!");
+    console.error("Failed to start server:", error);
+    process.exit(1);
   }
 }
 
