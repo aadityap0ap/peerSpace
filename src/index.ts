@@ -34,8 +34,8 @@ async function StartServer() {
   try {
     await ConnectDB();
 
-    server.listen(3003, () => {
-      console.log("Server running on port 3003");
+    server.listen(3000, () => {
+      console.log("Server running on port 3000");
     });
   } catch (error) {
     console.log("DB error occurred!");

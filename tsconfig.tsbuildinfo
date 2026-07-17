@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/db/db.tsx","./src/middlewares/authmiddleware.ts","./src/routes/auth.ts","./src/routes/friends.ts","./src/routes/room.ts","./src/websockets/chat.ts"],"version":"6.0.3"}
