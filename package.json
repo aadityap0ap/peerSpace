@@ -2,27 +2,32 @@
   "name": "peerspace",
   "version": "1.0.0",
   "description": "PeerSpace is a MERN-based realtime campus networking platform featuring WebSocket-powered messaging, community rooms, and live interactions.",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "type": "commonjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "tsc --b",
+    "build": "tsc --build",
     "start": "node dist/index.js",
-    "dev": "concurrently \"tsc -w\" \"nodemon dist/index.js\""
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/aadityap0ap/peerSpace.git"
   },
-  "keywords": [],
+  "keywords": [
+    "mern",
+    "express",
+    "mongodb",
+    "websocket",
+    "chat"
+  ],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/aadityap0ap/peerSpace/issues"
   },
   "homepage": "https://github.com/aadityap0ap/peerSpace#readme",
   "dependencies": {
-    "@types/ws": "^8.18.1",
     "bcrypt": "^6.0.0",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
@@ -38,6 +43,7 @@
     "@types/jsonwebtoken": "^9.0.10",
     "@types/mongoose": "^5.11.96",
     "@types/node": "^25.9.1",
+    "@types/ws": "^8.18.1",
     "concurrently": "^10.0.0",
     "nodemon": "^3.1.14",
     "ts-node": "^10.9.2",
